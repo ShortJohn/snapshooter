@@ -3,31 +3,48 @@ from selenium.webdriver.chrome.options import Options
 from PIL import Image
 from cStringIO import StringIO
 import sys
+from FileHelper import check_directory_exists
+import time
 
 
 def main():
     total_arguments = len(sys.argv)
-    if total_arguments == 1:
-        raise ValueError("Warning: You must give a website as an argument")
+    if total_arguments != 3:
+        raise ValueError("Warning: You must give two arguments.\n1) Url \n2) Path/to/save/image")
     url = sys.argv[1]
+    path = sys.argv[2]
+
+    exists = check_directory_exists(path)
+    if not exists:
+        raise Exception("The directory specified doesn't exist.\nPath: " + path)
 
     chrome_options = Options()
     chrome_options.add_argument("--no-sandbox")
     # comment next line if you want chrome to not be headless
-    chrome_options.add_argument("--headless")
+    # chrome_options.add_argument("--headless")
     chrome_driver = webdriver.Chrome('chromedriver', 0, chrome_options)
     chrome_driver.implicitly_wait(5)
-    chrome_driver.set_page_load_timeout(5)
+    # chrome_driver.set_page_load_timeout(5)
 
     try:
         chrome_driver.get(url)
     except common.exceptions.TimeoutException:
         print "Website didn't fully load"
+        print "Trying to stop website from loading"
+        try:
+            chrome_driver.execute_script("return window.stop;")
+        except common.exceptions.TimeoutException:
+            print "Failed to stop website from loading.Taking small screenshot"
+            chrome_driver.save_screenshot(path)
+            chrome_driver.close()
+            chrome_driver.quit()
+            exit(1)
+        time.sleep(2)
     scrollheight = get_scroll_height(chrome_driver)
 
     screenshot = scroll_and_take_screenshots(chrome_driver, scrollheight)
 
-    screenshot.save('ok.jpg')
+    screenshot.save(path)
 
     chrome_driver.close()
     chrome_driver.quit()
