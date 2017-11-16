@@ -1,5 +1,7 @@
 
 /src/*.log
+/src/*.png
+
 
 
 ### JetBrains template
@@ -53,3 +55,4 @@ crashlytics.properties
 crashlytics-build.properties
 fabric.properties
 
+/src/ok.png
