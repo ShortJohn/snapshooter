@@ -15,7 +15,7 @@ def main():
     if not exists:
         raise Exception("The directory specified doesn't exist.\nPath: " + path)
     firefox_driver = webdriver.Firefox()
-    firefox_driver.set_page_load_timeout(2)
+    firefox_driver.set_page_load_timeout(15)
 
     try:
         firefox_driver.get(url)

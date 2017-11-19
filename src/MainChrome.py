@@ -23,18 +23,15 @@ def main():
     # comment next line if you want chrome to not be headless
     # chrome_options.add_argument("--headless")
     chrome_driver = webdriver.Chrome('chromedriver', 0, chrome_options)
-    chrome_driver.implicitly_wait(5)
-    chrome_driver.set_page_load_timeout(5)
-    chrome_driver.set_script_timeout(5)
+    chrome_driver.implicitly_wait(30)
+    chrome_driver.set_page_load_timeout(30)
+    chrome_driver.set_script_timeout(30)
 
     try:
         chrome_driver.get(url)
     except common.exceptions.TimeoutException:
-        # todo fix problem where chrome crashes after exceeding page loat timeout
-        print "Website didn't fully load.Taking small screenshot"
-        # todo enable next line when crash is fixed
-        # chrome_driver.save_screenshot(path)
-        print "Exiting"
+        # todo find a way for chrome to not crash when tryint go take screenshots if timeout is exceeded
+        print "Exiting. Failed to load " + url + ". Exiting"
         chrome_driver.quit()
         exit(1)
 
@@ -46,7 +43,7 @@ def main():
 
     chrome_driver.quit()
 
-    x = 5
+    exit(0)
 
 
 if __name__ == "__main__":
