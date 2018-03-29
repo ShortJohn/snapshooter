@@ -42,6 +42,7 @@
 
 # TODO
 
+* Add option to choose whether the web driver will be headless
 * Add security check that the website is a valid website
 * Create custom Exceptions
 * Create helper for chrome that is responsible to setup chrome correctly
